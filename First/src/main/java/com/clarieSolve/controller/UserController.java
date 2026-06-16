@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clarieSolve.dto.LoginRequest;
 import com.clarieSolve.entity.User;
 import com.clarieSolve.service.UserService;
 
@@ -21,6 +22,11 @@ public class UserController {
 	@PostMapping("/register")
 	public String register(@Valid @RequestBody User user) {
 		return userService.register(user);
+	}
+	
+	@PostMapping("/login")
+	public String Login(@Valid @RequestBody LoginRequest loginRequest) {
+		return userService.login(loginRequest);
 	}
 
 }

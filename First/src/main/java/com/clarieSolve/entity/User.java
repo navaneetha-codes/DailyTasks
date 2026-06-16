@@ -28,14 +28,15 @@ public class User {
 	    sequenceName = "USERS_SEQ",
 	    allocationSize = 1
 	)
-
 	private Long id;
+	
 	@NotBlank(message="Name is required")
 	@Pattern(
 		    regexp = "^[A-Za-z ]+$",
 		    message = "Name should contain only letters and spaces"
 		)
 	private String name;
+	
 	@Email(message="Invalid email")
 	@NotBlank(message="Email is required")
 	@Column(unique=true)
@@ -45,8 +46,15 @@ public class User {
 		)
 	private String email;
 	
-	@NotBlank(message="Password is required")
+	
+	
+	@NotBlank(message = "Password is required")
+	@Pattern(
+		    regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,12}$",
+		    message = "Password must be 8-12 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+		)
 	private String password;
+	
 	@NotBlank(message="Role is required")
 	@Pattern(
 		    regexp = "^[A-Za-z ]+$",
