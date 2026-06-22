@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clarieSolve.dto.LoginRequest;
-import com.clarieSolve.entity.User;
+import com.clarieSolve.dto.RegisterUserRequest;
 import com.clarieSolve.service.UserService;
 
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public String register(@Valid @RequestBody User user) {
+	public String register(@Valid @RequestBody RegisterUserRequest user) {
 		return userService.register(user);
 	}
 	

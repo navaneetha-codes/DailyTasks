@@ -30,36 +30,12 @@ public class User {
 	)
 	private Long id;
 	
-	@NotBlank(message="Name is required")
-	@Pattern(
-		    regexp = "^[A-Za-z ]+$",
-		    message = "Name should contain only letters and spaces"
-		)
 	private String name;
 	
-	@Email(message="Invalid email")
-	@NotBlank(message="Email is required")
-	@Column(unique=true)
-	@Pattern(
-		    regexp = "^[A-Za-z0-9._%+-]+@gmail\\.com$",
-		    message = "Email must be a valid gmail.com address"
-		)
 	private String email;
 	
-	
-	
-	@NotBlank(message = "Password is required")
-	@Pattern(
-		    regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,12}$",
-		    message = "Password must be 8-12 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-		)
 	private String password;
 	
-	@NotBlank(message="Role is required")
-	@Pattern(
-		    regexp = "^[A-Za-z ]+$",
-		    message = "Role should contain only letters and spaces"
-		)
-    private String role;
+	private String role;
 
 }

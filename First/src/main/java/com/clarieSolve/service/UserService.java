@@ -3,29 +3,48 @@ package com.clarieSolve.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.clarieSolve.config.SecurityConfig;
 import com.clarieSolve.dto.LoginRequest;
+import com.clarieSolve.dto.RegisterUserRequest;
 import com.clarieSolve.entity.User;
 import com.clarieSolve.repository.UserRepository;
-
-import jakarta.validation.Valid;
 
 @Service
 public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	SecurityConfig securityConfig;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
-	public String register(User user) {
+	public String register(RegisterUserRequest request) {
 		
-		Optional<User> existingUser=userRepository.findByEmail(user.getEmail());
+		Optional<User> existingUser=userRepository.findByEmail(request.getEmail());
 		if(existingUser.isPresent()) {
 			return "Email already exists";
 		}
-		
-		userRepository.save(user);
+		String password=request.getPassword();
+	
+		String encodedPassword =passwordEncoder.encode(password);
+		System.out.println("Original Password = " + password);
+		System.out.println("Encoded Password = " + encodedPassword);
+
+		request.setPassword(encodedPassword);
+		User user = new User();
+
+	    user.setName(request.getName());
+	    user.setEmail(request.getEmail());
+	    user.setPassword(encodedPassword);
+	    user.setRole(request.getRole());
+
+	    userRepository.save(user);
+
 		return "Registration Successful";
 	}
 	
@@ -34,9 +53,9 @@ public class UserService {
 		if(existingUser.isPresent()) {
 			
 			User dbUser=existingUser.get();
-			if(dbUser.getPassword().equals(loginRequest.getPassword())) {
 			
-			return "Login Success";
+			if (passwordEncoder.matches(loginRequest.getPassword(),dbUser.getPassword())) {
+			    return "Login Success";
 			}else {
 				return "Invalid Password";
 			}
